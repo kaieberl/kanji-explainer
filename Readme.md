@@ -27,8 +27,8 @@ Make sure the input is passed as arguments.
 2. In settings, go to Security & Privacy -> Privacy -> Full Disk Access and add the app that should invoke the script, e.g. Safari. 
 Else macOS will throw the error "Operation not permitted".
 
-3. In settings, go to Keyboard -> Shortcuts -> Services -> General -> "Kanji Explainer" and set a keyboard shortcut, e.g. cmd+shift+K.
+3. In settings, go to Keyboard -> Shortcuts -> Services -> Text -> "Kanji Explainer" and set a keyboard shortcut, e.g. cmd+shift+K.
 
-4. In Safari, mark a kanji and press the keyboard shortcut. A description should be played with the kanji and its meanings and readings.
+4. In your browser / pdf viewer etc., mark a kanji and press the keyboard shortcut. After ~3s, a description should be played with the kanji and its meanings and readings.
 
 You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192box5b.com/es/4nen_jp_kanji_hyo_002.html).
