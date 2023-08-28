@@ -3,100 +3,98 @@ import os
 import sys
 from typing import Union
 
+import yaml  # PyYAML
 import openai
-from google.cloud import texttospeech
 import pygame.mixer
+from google.cloud import texttospeech
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Set up your OpenAI API key
-project_dir = os.path.dirname(os.path.abspath(__file__))
-output_dir = project_dir + '/out'
-openai.api_key = open(project_dir + '/openai.txt', 'r').read()
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = project_dir + "/texttospeech.json"
-
-SAVE_TO_MP3 = True
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(PROJECT_DIR, 'out')
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(PROJECT_DIR, "texttospeech.json")
+openai.api_key = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read()
 
 
-def get_kanji_explanation(kanji: str) -> str:
+class Config:
     """
-    use the OpenAI GPT-3.5-Turbo model with 16KB context length to generate a short explanation of a kanji
+    Config class for the project
 
-    Args:
-        kanji: a single kanji character
-
-    Returns:
-        a short explanation of the kanji
+    Attributes:
+        save_to_mp3 (bool): Whether to save the audio to mp3
+        model_name (str): The OpenAI model name to use, e.g. gpt-3.5-turbo-16k, gpt-4
     """
-    prompt = f"'{kanji}'の漢字の読み、意味とよく使う例文を小学６年生のレベルで示しなさい。ひらがなはいらない"
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-16k",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=300
-    )
+    def __init__(self, save_to_mp3, model_name, system_message):
+        self.save_to_mp3 = save_to_mp3
+        self.model_name = model_name
+        self.system_message = system_message
 
-    return response.choices[0].message.content.strip().replace('\n\n', '。\n')
+    @classmethod
+    def from_yaml(cls, yaml_file):
+        with open(yaml_file, 'r') as f:
+            config_data = yaml.safe_load(f)
 
-
-def text_to_speech(text: str, kanji: str = 'output') -> None:
-    """
-    use Google cloud text to speech to convert text to speech
-    Args:
-        text: text in Japanese
-        kanji: kanji character to use as the output file name
-    """
-    client = texttospeech.TextToSpeechClient()
-
-    input_text = texttospeech.SynthesisInput(text=text)
-
-    # Note: the voice can also be specified by name.
-    # Names of voices can be retrieved with client.list_voices().
-    voice = texttospeech.VoiceSelectionParams(
-        language_code="ja-JP",
-        name="ja-JP-Wavenet-B",
-        ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
-    )
-
-    audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3
-    )
-
-    response = client.synthesize_speech(
-        request={"input": input_text, "voice": voice, "audio_config": audio_config}
-    )
-
-    audio_stream = io.BytesIO(response.audio_content)
-
-    if SAVE_TO_MP3:
-        # create out directory if it doesn't exist
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-
-        # Save the audio stream to a file
-        output_filename = f"/{kanji}.mp3"
-        with open(output_dir + output_filename, "wb") as f:
-            f.write(audio_stream.read())
-
-        logger.info(f"Saved to {output_filename}")
-
-    play_audio(output_dir + output_filename if SAVE_TO_MP3 else audio_stream)
+        return cls(**config_data)
 
 
-def play_audio(audio_stream: Union[str, io.BytesIO]) -> None:
-    """
-    play audio stream in the background
+class KanjiExplainer:
 
-    Args:
-        audio_stream: audio stream to play (either a file path or a BytesIO object)
-    """
-    pygame.mixer.init()
-    pygame.mixer.music.load(audio_stream)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
+    @staticmethod
+    def get_explanation(kanji: str, config: Config) -> str:
+        response = openai.ChatCompletion.create(
+            model=config.model_name,
+            messages=[
+                {
+                    "role": "system",
+                    "content": config.system_message
+                },
+                {"role": "user", "content": f"{kanji}"},
+            ],
+            max_tokens=200
+        )
+        return response.choices[0].message.content.strip()
+
+
+class SpeechSynthesizer:
+
+    @staticmethod
+    def convert_text_to_speech(text: str, config: Config, kanji: str = 'output') -> None:
+        client = texttospeech.TextToSpeechClient()
+        input_text = texttospeech.SynthesisInput(text=text)
+        voice = texttospeech.VoiceSelectionParams(
+            language_code="ja-JP",
+            name="ja-JP-Wavenet-B",
+            ssml_gender=texttospeech.SsmlVoiceGender.FEMALE,
+        )
+        audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
+        response = client.synthesize_speech(
+            request={"input": input_text, "voice": voice, "audio_config": audio_config}
+        )
+        audio_stream = io.BytesIO(response.audio_content)
+        if config.save_to_mp3:
+            if not os.path.exists(OUTPUT_DIR):
+                os.makedirs(OUTPUT_DIR)
+
+            output_filename = f"/{kanji}.mp3"
+            with open(OUTPUT_DIR + output_filename, "wb") as f:
+                f.write(audio_stream.read())
+            logger.info(f"Saved to {output_filename}")
+
+        AudioPlayer.play(OUTPUT_DIR + output_filename if config.save_to_mp3 else audio_stream)
+
+
+class AudioPlayer:
+
+    @staticmethod
+    def play(audio_stream: Union[str, io.BytesIO]) -> None:
+        pygame.mixer.init()
+        pygame.mixer.music.load(audio_stream)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
 
 
 if __name__ == '__main__':
@@ -105,12 +103,17 @@ if __name__ == '__main__':
         sys.exit(1)
     kanji_input = sys.argv[1]
 
-    # if explanation is already in out directory, play the existing file
-    if os.path.exists(output_dir + f'/{kanji_input}.mp3'):
-        play_audio(output_dir + f'/{kanji_input}.mp3')
+    # Parsing config data from YAML file
+    config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
+
+    if os.path.exists(os.path.join(OUTPUT_DIR, f'{kanji_input}.mp3')):
+        AudioPlayer.play(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.mp3')
         sys.exit(0)
 
-    explanation = get_kanji_explanation(kanji_input)
+    explanation = KanjiExplainer.get_explanation(kanji_input, config)
     logger.info(explanation)
 
-    text_to_speech(explanation, kanji_input)
+    with open(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.txt', 'w') as f:
+        f.write(explanation)
+
+    SpeechSynthesizer.convert_text_to_speech(explanation, config, kanji_input)
