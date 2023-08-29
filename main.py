@@ -78,7 +78,7 @@ class SpeechSynthesizer:
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
 
-            output_filename = f"/{kanji}.mp3"
+            output_filename = f"/{kanji}_{config.model_name}.mp3"
             with open(OUTPUT_DIR + output_filename, "wb") as f:
                 f.write(audio_stream.read())
             logger.info(f"Saved to {output_filename}")
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     # Parsing config data from YAML file
     config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
 
-    if os.path.exists(os.path.join(OUTPUT_DIR, f'{kanji_input}.mp3')):
+    if os.path.exists(os.path.join(OUTPUT_DIR, f'{kanji_input}_{config.model_name}.mp3')):
         AudioPlayer.play(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.mp3')
         sys.exit(0)
 
