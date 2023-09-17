@@ -20,7 +20,7 @@ Sample output for '禁': [output.mp3](https://github.com/kaieberl/kanji-explaine
 
 ## API Keys
 
-The script uses OpenAI's GPT API to generate an example use cases for the kanji, and the Google Cloud Text-to-Speech API to speak it.
+The script uses OpenAI's GPT API to generate example use cases for the kanji, and the Google Cloud Text-to-Speech API to speak it.
 To use the script, you need to have an OpenAI API key and a Google Cloud API key.
 The OpenAI key should be stored in a file called `openai_api_key.txt` in the same directory as the main.py file.
 It can be generated [here](https://platform.openai.com/account/api-keys) and costs 0.003$ / 1000 Tokens for gpt-3.5-turbo-16k, and 0.06$ for gpt-4.
@@ -28,7 +28,7 @@ To use gpt-4, you need a prepaid credit balance of at least 0.50$, else you will
 The Google cloud authentication json file should be in the same directory as the main.py file. It can be downloaded from the Google Cloud Console, as described [here](https://cloud.google.com/api-keys/docs/create-manage-api-keys).
 TLDR: On [https://cloud.google.com](https://cloud.google.com), create a new project. In your project, in the upper right corner, click on the 3 dots > project settings > service accounts > choose one or create service account > create key > json > create.
 The resulting json file should be downloaded automatically.
-Google TTS is free for the first 1 million characters per month, then 4$ per 1 million characters.
+Google TTS is free for the first 1 million characters per month, then $4 per 1 million characters.
 
 You can set the model inside the `config.yaml` settings file.
 
