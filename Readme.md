@@ -35,7 +35,7 @@ You can set the model inside the `config.yaml` settings file.
 ## Instructions for invoking via keyboard shortcut in macOS
 
 1. Create the following automator script to make sure the script is invoked with the conda environment:
-```
+```bash
 source ~/opt/miniconda3/etc/profile.d/conda.sh
 conda activate kanji-explainer
 python3 ~/Documents/Code/kanji-explainer/main.py $1
