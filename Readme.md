@@ -1,5 +1,7 @@
 # Kanji Explainer
 
+日本語のインストラクションは[こちら](https://github.com/kaieberl/kanji-explainer/blob/main/Installation_jp.md)。
+
 ## Motivation
 
 When I learn new Kanji, I can either look them up in a Japanese dictionary, or use a translator.
@@ -52,8 +54,8 @@ Else macOS will throw the error "Operation not permitted".
 You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192box5b.com/es/4nen_jp_kanji_hyo_002.html).
 
 ## Instructions for invoking via keyboard shortcut in Windows
-[!WARNING]
-This is still a work in progress
+> [!WARNING]
+> This is still a work in progress
 1. **Create a Shortcut**:  
 Right-click on an empty space on your desktop, go to "New" and then "Shortcut".
 In the location field, input `C:\Windows\System32\cmd.exe /c path/to/kanji-explainer/main.py %1` and click Next.
