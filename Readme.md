@@ -50,3 +50,24 @@ Else macOS will throw the error "Operation not permitted".
 4. In your browser / pdf viewer etc., mark a kanji and press the keyboard shortcut. After ~3s, a description should be played with commonly used vocabularies and their meanings.
 
 You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192box5b.com/es/4nen_jp_kanji_hyo_002.html).
+
+## Instructions for invoking via keyboard shortcut in Windows
+[!WARNING]
+This is still a work in progress
+1. **Create a Shortcut**:  
+Right-click on an empty space on your desktop, go to "New" and then "Shortcut".
+In the location field, input `C:\Windows\System32\cmd.exe /c path/to/kanji-explainer/main.py %1` and click Next.
+2. **Modify the Shortcut**:  
+Once the shortcut is created, right-click on it and select "Properties".
+In the Shortcut tab, locate the "Target" field.
+At the end of the "Target" field, you should see the command you entered earlier. Make sure the command is correct.  
+Assign a Hotkey:  
+In the same "Properties" dialog, there's a field labeled "Shortcut key". Click in this field and press the key combination you wish to use for your shortcut. For example, if you press "Ctrl + Alt + K", this key combination will now execute your command whenever pressed.
+3. **Save Changes**:  
+Click "Apply" and then "OK" to save changes.
+```cmd
+@echo off
+call %USERPROFILE%\Miniconda3\Scripts\activate
+conda activate kanji-explainer
+python %USERPROFILE%\Documents\Code\kanji-explainer\main.py %1
+```

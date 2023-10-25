@@ -1,0 +1,6 @@
+google-auth-oauthlib
+google-cloud-texttospeech
+openai
+pydub
+pygame
+pyyaml
