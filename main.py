@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, 'out')
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(PROJECT_DIR, "texttospeech.json")
-openai.api_key = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read()
+openai.api_key = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read().strip()
 
 
 class Config:
