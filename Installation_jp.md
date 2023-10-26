@@ -1,6 +1,6 @@
 # インストール手順： macOS の場合
-0. 準備
-Python 3.8 以上をインストールしてください。[こちら](https://www.python.org/downloads/release/python-3918/)からダウンロードできます。conda でインストールすることもできます。
+0. 準備  
+Python 3.8 以上をインストールしてください。[こちら](https://www.python.org/downloads/release/python-3918/)からダウンロードできます。conda でインストールすることもできます。  
 git をインストールしてください。[こちら](https://git-scm.com/downloads)からダウンロードできます。
 1. このプロジェクトをクローンしてください。そのためには、ターミナルを開き、以下のコマンドを実行してください。your/path は、プロジェクトを保存したい場所に置き換えてください。
 ```bash
@@ -19,14 +19,14 @@ python3 -m venv kanji-explainer-env
 source kanji-explainer-env/bin/activate
 pip install -r requirements.txt
 ```
-3. OpenAI API キーを取得してください。[こちら](https://platform.openai.com/account/api-keys)から取得できます。
+3. OpenAI API キーを取得してください。[こちら](https://platform.openai.com/account/api-keys)から取得できます。  
 `openai.txt` というファイルを作成し、その中に API キーを書き込んでください。
-4. Google Cloud API キーを取得してください。[こちら](https://cloud.google.com/api-keys/docs/create-manage-api-keys)から取得できます。
+4. Google Cloud API キーを取得してください。[こちら](https://cloud.google.com/api-keys/docs/create-manage-api-keys)から取得できます。  
 ダウンロードした json ファイルを、`texttospeech.json` という名前で main.py と同じディレクトリに保存してください。
 
 これで、プロジェクトの準備は完了です。
 
-## キーボードショートカットを使る手順
+## キーボードショートカットを作る手順
 Automator を開き、以下のようにスクリプトを作成してください。
 path/to/kanji-explainer は、ダウンロードしたプロジェクトのパスに置き換えてください。
 パスは、ターミナルで `pwd` と入力することで確認できます。
@@ -77,20 +77,17 @@ python3 ~/Documents/Code/kanji-explainer/main.py $1
 
 これで、プロジェクトの準備は完了です。
 
-## キーボードショートカットを使う手順
-> [!WARNING]
-> この手順はまだでき上がっていません
-1. **ショートカットを作成する**:
-    - デスクトップの空のスペースで右クリックし、"新規(N)"を選んでから"ショートカット(S)"を選びます。
-    - 位置フィールドに`C:\Windows\System32\cmd.exe /c path/to/kanji-explainer/kanji-explainer.bat %1`と入力し、次へをクリックします。
-2. kanji-explainer.bat ファイルを右クリックし、"編集"を選びます。
-2行目、3行目の `path\to\kanji-explainer` は、ダウンロードしたプロジェクトのパスに置き換えてください。
-パスは、エクスプローラーでプロジェクトのフォルダを開き、アドレスバーに表示されているパスをコピーすることで確認できます。
+## キーボードショートカットを作る手順
+0. **準備**  
+    PowerShellがインストールされていることを確認してください。コマンドプロンプトを開き、`powershell`と入力して確認できます。インストールされていない場合は、[こちら](https://docs.microsoft.com/ja-jp/powershell/scripting/install/installing-powershell?view=powershell-7.1)からダウンロードできます。
+1. `kanji-explainer.ps1`ファイルを右クリックし、`編集`を選択します。`kanji-explainer-env`フォルダへのパスを、コンピュータ上の`kanji-explainer-env`フォルダへのパスに置き換えます。
+2. **ショートカットを作成**:
+    - デスクトップで右クリックし、`新規 > ショートカット`を選択します。
+    - 位置フィールドに、`powershell.exe -File "C:\path\to\kanji-explainer.ps1"`と入力し、`C:\path\to\kanji-explainer.ps1`を`kanji-explainer.ps1`ファイルへのパスに置き換えます。
 
-3. **ショートカットを修正する**:
-    - ショートカットが作成されたら、それを右クリックし、"プロパティ"を選びます。
-    - ショートカットタブで、"対象(T)"フィールドを探します。
-    - "対象(T)"フィールドの最後には、先に入力したコマンドが表示されているはずです。コマンドが正しいことを確認してください。
+3. **キーボードショートカットを設定**:
+    - 新しく作成されたショートカットを右クリックし、`プロパティ`を選択します。
+    - `ショートカット`タブで、`ショートカットキー`フィールドをクリックし、使用するキーの組み合わせを押します。例: `Ctrl + Alt + K`。
+    - `OK`をクリックして変更を保存します。
 
-   **ホットキーを割り当てる**:
-    - 同じ"プロパティ"ダイアログで、"ショートカットキー"とラベル付けされたフィールドがあります。このフィールドをクリックし、ショートカット用のキーの組み合わせを押します。例えば、"Ctrl + Alt + K"を押すと、このキーの組み合わせは、押される
+これで、漢字をコピーしてキーボードショートカットを押すと、スクリプトが実行されます。

@@ -28,6 +28,7 @@ The OpenAI key should be stored in a file called `openai_api_key.txt` in the sam
 It can be generated [here](https://platform.openai.com/account/api-keys) and costs 0.003$ / 1000 Tokens for gpt-3.5-turbo-16k, and 0.06$ for gpt-4.
 To use gpt-4, you need a prepaid credit balance of at least 0.50$, else you will get an API error.
 The Google cloud authentication json file should be in the same directory as the main.py file. It can be downloaded from the Google Cloud Console, as described [here](https://cloud.google.com/api-keys/docs/create-manage-api-keys).
+
 TLDR: On [https://cloud.google.com](https://cloud.google.com), create a new project. In your project, in the upper right corner, click on the 3 dots > project settings > service accounts > choose one or create service account > create key > json > create.
 The resulting json file should be downloaded automatically.
 Google TTS is free for the first 1 million characters per month, then $4 per 1 million characters.
@@ -54,22 +55,17 @@ Else macOS will throw the error "Operation not permitted".
 You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192box5b.com/es/4nen_jp_kanji_hyo_002.html).
 
 ## Instructions for invoking via keyboard shortcut in Windows
-> [!WARNING]
-> This is still a work in progress
-1. **Create a Shortcut**:  
-Right-click on an empty space on your desktop, go to "New" and then "Shortcut".
-In the location field, input `C:\Windows\System32\cmd.exe /c path/to/kanji-explainer/main.py %1` and click Next.
-2. **Modify the Shortcut**:  
-Once the shortcut is created, right-click on it and select "Properties".
-In the Shortcut tab, locate the "Target" field.
-At the end of the "Target" field, you should see the command you entered earlier. Make sure the command is correct.  
-Assign a Hotkey:  
-In the same "Properties" dialog, there's a field labeled "Shortcut key". Click in this field and press the key combination you wish to use for your shortcut. For example, if you press "Ctrl + Alt + K", this key combination will now execute your command whenever pressed.
-3. **Save Changes**:  
-Click "Apply" and then "OK" to save changes.
-```cmd
-@echo off
-call %USERPROFILE%\Miniconda3\Scripts\activate
-conda activate kanji-explainer
-python %USERPROFILE%\Documents\Code\kanji-explainer\main.py %1
-```
+0. **Preparation**  
+    Make sure you have PowerShell installed. You can check by opening the command prompt and typing `powershell`. If it is not installed, you can download it [here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1).
+1. **Edit the PowerShell Script**:
+   Right-click on the `kanji-explainer.ps1` file and select `Edit`. Replace the path to the `kanji-explainer-env` folder with the path to the `kanji-explainer-env` folder on your computer.
+2. **Create a Shortcut**:
+    - Right-click on the desktop, go to `New > Shortcut`.
+    - In the location field, enter: `powershell.exe -File "C:\path\to\kanji-explainer.ps1"`, replacing `C:\path\to\kanji-explainer.ps1` with the path to the `kanji-explainer.ps1` file.
+
+3. **Set a Keyboard Shortcut**:
+    - Right-click on the newly created shortcut and select `Properties`.
+    - In the `Shortcut` tab, click in the `Shortcut key` field and press the key combination you want to use, e.g. `Ctrl + Alt + K`.
+    - Click `OK` to save your changes.
+
+Now, if you copy a kanji and press the keyboard shortcut, the script will be run.
