@@ -103,6 +103,9 @@ if __name__ == '__main__':
         sys.exit(1)
     kanji_input = sys.argv[1]
 
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+
     # Parsing config data from YAML file
     config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
 
@@ -113,7 +116,7 @@ if __name__ == '__main__':
     explanation = KanjiExplainer.get_explanation(kanji_input, config)
     logger.info(explanation)
 
-    with open(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.txt', 'w') as f:
+    with open(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.txt', 'w', encoding='utf-8') as f:
         f.write(explanation)
 
     SpeechSynthesizer.convert_text_to_speech(explanation, config, kanji_input)

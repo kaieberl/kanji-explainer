@@ -83,7 +83,7 @@ python3 ~/Documents/Code/kanji-explainer/main.py $1
 1. `kanji-explainer.ps1`ファイルを右クリックし、`編集`を選択します。`kanji-explainer-env`フォルダへのパスを、コンピュータ上の`kanji-explainer-env`フォルダへのパスに置き換えます。
 2. **ショートカットを作成**:
     - デスクトップで右クリックし、`新規 > ショートカット`を選択します。
-    - 位置フィールドに、`powershell.exe -File "C:\path\to\kanji-explainer.ps1"`と入力し、`C:\path\to\kanji-explainer.ps1`を`kanji-explainer.ps1`ファイルへのパスに置き換えます。
+    - 位置フィールドに、`pwsh.exe -File "C:\path\to\kanji-explainer.ps1"`と入力し、`C:\path\to\kanji-explainer.ps1`を`kanji-explainer.ps1`ファイルへのパスに置き換えます。
 
 3. **キーボードショートカットを設定**:
     - 新しく作成されたショートカットを右クリックし、`プロパティ`を選択します。

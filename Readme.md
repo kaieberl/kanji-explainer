@@ -44,12 +44,9 @@ conda activate kanji-explainer
 python3 ~/Documents/Code/kanji-explainer/main.py $1
 ```
 Make sure the input is passed as arguments.
-
 2. In settings, go to Security & Privacy -> Privacy -> Full Disk Access and add the app that should invoke the script, e.g. Safari. 
 Else macOS will throw the error "Operation not permitted".
-
 3. In settings, go to Keyboard -> Shortcuts -> Services -> Text -> "Kanji Explainer" and set a keyboard shortcut, e.g. cmd+shift+K.
-
 4. In your browser / pdf viewer etc., mark a kanji and press the keyboard shortcut. After ~3s, a description should be played with commonly used vocabularies and their meanings.
 
 You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192box5b.com/es/4nen_jp_kanji_hyo_002.html).
@@ -61,8 +58,7 @@ You can try it out on the kanji tables provided [here](https://xn--fdk3a7ctb5192
    Right-click on the `kanji-explainer.ps1` file and select `Edit`. Replace the path to the `kanji-explainer-env` folder with the path to the `kanji-explainer-env` folder on your computer.
 2. **Create a Shortcut**:
     - Right-click on the desktop, go to `New > Shortcut`.
-    - In the location field, enter: `powershell.exe -File "C:\path\to\kanji-explainer.ps1"`, replacing `C:\path\to\kanji-explainer.ps1` with the path to the `kanji-explainer.ps1` file.
-
+    - In the location field, enter: `pwsh.exe -File "C:\path\to\kanji-explainer.ps1"`, replacing `C:\path\to\kanji-explainer.ps1` with the path to the `kanji-explainer.ps1` file.
 3. **Set a Keyboard Shortcut**:
     - Right-click on the newly created shortcut and select `Properties`.
     - In the `Shortcut` tab, click in the `Shortcut key` field and press the key combination you want to use, e.g. `Ctrl + Alt + K`.
