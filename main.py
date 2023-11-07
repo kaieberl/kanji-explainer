@@ -23,12 +23,12 @@ class Config:
     Config class for the project
 
     Attributes:
-        save_to_mp3 (bool): Whether to save the audio to mp3
+        save_output (bool): Whether to save the audio to mp3
         model_name (str): The OpenAI model name to use, e.g. gpt-3.5-turbo-16k, gpt-4
     """
 
-    def __init__(self, save_to_mp3, model_name, system_message):
-        self.save_to_mp3 = save_to_mp3
+    def __init__(self, save_output, model_name, system_message):
+        self.save_output = save_output
         self.model_name = model_name
         self.system_message = system_message
 
@@ -53,7 +53,8 @@ class KanjiExplainer:
                 },
                 {"role": "user", "content": f"{kanji}"},
             ],
-            max_tokens=200
+            max_tokens=200,
+            temperature=0.7
         )
         return response.choices[0].message.content.strip()
 
@@ -74,7 +75,7 @@ class SpeechSynthesizer:
             request={"input": input_text, "voice": voice, "audio_config": audio_config}
         )
         audio_stream = io.BytesIO(response.audio_content)
-        if config.save_to_mp3:
+        if config.save_output:
             if not os.path.exists(OUTPUT_DIR):
                 os.makedirs(OUTPUT_DIR)
 
@@ -83,7 +84,7 @@ class SpeechSynthesizer:
                 f.write(audio_stream.read())
             logger.info(f"Saved to {output_filename}")
 
-        AudioPlayer.play(OUTPUT_DIR + output_filename if config.save_to_mp3 else audio_stream)
+        AudioPlayer.play(OUTPUT_DIR + output_filename if config.save_output else audio_stream)
 
 
 class AudioPlayer:

@@ -22,10 +22,10 @@ Sample output for '禁': [output.mp3](https://github.com/kaieberl/kanji-explaine
 
 ## API Keys
 
-The script uses OpenAI's GPT API to generate example use cases for the kanji, and the Google Cloud Text-to-Speech API to speak it.
+The script uses OpenAI's GPT API to generate example use cases for the kanji, and the Google Cloud Text-to-Speech API to speak the output.
 To use the script, you need to have an OpenAI API key and a Google Cloud API key.
 The OpenAI key should be stored in a file called `openai_api_key.txt` in the same directory as the main.py file.
-It can be generated [here](https://platform.openai.com/account/api-keys) and costs 0.003$ / 1000 Tokens for gpt-3.5-turbo-16k, and 0.06$ for gpt-4.
+It can be generated [here](https://platform.openai.com/account/api-keys) and costs 0.002$ / 1000 output Tokens for gpt-3.5-turbo-16k, and 0.03$ for gpt-4.
 To use gpt-4, you need a prepaid credit balance of at least 0.50$, else you will get an API error.
 The Google cloud authentication json file should be in the same directory as the main.py file. It can be downloaded from the Google Cloud Console, as described [here](https://cloud.google.com/api-keys/docs/create-manage-api-keys).
 
@@ -34,6 +34,16 @@ The resulting json file should be downloaded automatically.
 Google TTS is free for the first 1 million characters per month, then $4 per 1 million characters.
 
 You can set the model inside the `config.yaml` settings file.
+
+## Customization
+
+You can customize the output by editing the system_prompt in the `config.yaml` file.
+E.g., you might want to try the following prompt:
+```
+Give some vocabulary examples and example sentences containing the input kanji for commonly used words 
+in a corporate or technology environment or everyday life. 
+If a kanji has multiple readings, give examples for each. Use Japanese only, don't use furigana.
+```
 
 ## Instructions for invoking via keyboard shortcut in macOS
 
