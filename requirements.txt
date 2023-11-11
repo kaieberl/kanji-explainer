@@ -1,6 +1,6 @@
 google-auth-oauthlib
 google-cloud-texttospeech
-openai
+openai>=1.0.0
 pydub
 pygame
 pyyaml

@@ -4,7 +4,7 @@ import sys
 from typing import Union
 
 import yaml  # PyYAML
-import openai
+from openai import OpenAI
 import pygame.mixer
 from google.cloud import texttospeech
 import logging
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(PROJECT_DIR, 'out')
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(PROJECT_DIR, "texttospeech.json")
-openai.api_key = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read().strip()
+os.environ["OPENAI_API_KEY"] = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read().strip()
 
 
 class Config:
@@ -44,7 +44,8 @@ class KanjiExplainer:
 
     @staticmethod
     def get_explanation(kanji: str, config: Config) -> str:
-        response = openai.ChatCompletion.create(
+        client = OpenAI()
+        response = client.chat.completions.create(
             model=config.model_name,
             messages=[
                 {
