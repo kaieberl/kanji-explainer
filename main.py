@@ -1,7 +1,8 @@
 import io
 import os
 import sys
-from typing import Union, Dict
+from typing import Union
+from omegaconf import DictConfig
 
 from omegaconf import OmegaConf
 from openai import OpenAI
@@ -21,7 +22,7 @@ os.environ["OPENAI_API_KEY"] = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r'
 class KanjiExplainer:
 
     @staticmethod
-    def get_explanation(kanji: str, config: Dict) -> str:
+    def get_explanation(kanji: str, config: DictConfig) -> str:
         client = OpenAI()
         response = client.chat.completions.create(
             model=config.model_name,
@@ -42,7 +43,7 @@ class KanjiExplainer:
 class SpeechSynthesizer:
 
     @staticmethod
-    def convert_text_to_speech(text: str, config: Dict, kanji: str = 'output') -> None:
+    def convert_text_to_speech(text: str, config: DictConfig, kanji: str = 'output') -> None:
         client = texttospeech.TextToSpeechClient()
         input_text = texttospeech.SynthesisInput(text=text)
         voice = texttospeech.VoiceSelectionParams(

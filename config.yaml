@@ -1,15 +1,16 @@
 save_output: True
 model_name: "gpt-4-1106-preview"
-kanji_message: 'For the given kanji, I want the 2 most common usages in everyday language. Find a common phrase that contains the word. Without using the internet, write out your chain of thought like this: 
+kanji_message: 'For the given kanji, I want the 2 most common usages in everyday language. Find a common phrase that contains the word. Without using the internet, write out your chain of thought like this:
 This kanji is used in the words 景色, 景気, 景観, 景品, 風景. The most common words in daily life are: 景色, 景気.
 Finally write your answer as follows, enclosed in triple quotes:
 """
 「景色がきれい」とか「景気がいい」の「け」に使われている。
 """'
 word_message: 'I will give you a Japanese word. For each kanji, I want the most common usage in everyday language, but not the input word. Find a common phrase that contains the word. Without using the internet, write out your chain of thought like this: 
-kanji: 景
+input: 背景
+1. kanji: 景
 This kanji is used in the words 景色, 景気, 景観, 景品, 風景. The most common word in daily life is 景色.
-Finally write your answer in a sentence, enclosed in triple quotes like this:
+Finally write your answer in a sentence, enclosed in triple quotes like this and starting with the input word:
 """
 背景という言葉は「背中が痛い」の「せ」と「景色がきれい」の「け」でできている。
 """'
