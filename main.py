@@ -1,9 +1,9 @@
 import io
 import os
 import sys
-from typing import Union
+from typing import Union, Dict
 
-import yaml  # PyYAML
+from omegaconf import OmegaConf
 from openai import OpenAI
 import pygame.mixer
 from google.cloud import texttospeech
@@ -18,52 +18,31 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(PROJECT_DIR, "textto
 os.environ["OPENAI_API_KEY"] = open(os.path.join(PROJECT_DIR, 'openai.txt'), 'r').read().strip()
 
 
-class Config:
-    """
-    Config class for the project
-
-    Attributes:
-        save_output (bool): Whether to save the audio to mp3
-        model_name (str): The OpenAI model name to use, e.g. gpt-3.5-turbo-16k, gpt-4
-    """
-
-    def __init__(self, save_output, model_name, system_message):
-        self.save_output = save_output
-        self.model_name = model_name
-        self.system_message = system_message
-
-    @classmethod
-    def from_yaml(cls, yaml_file):
-        with open(yaml_file, 'r') as f:
-            config_data = yaml.safe_load(f)
-
-        return cls(**config_data)
-
-
 class KanjiExplainer:
 
     @staticmethod
-    def get_explanation(kanji: str, config: Config) -> str:
+    def get_explanation(kanji: str, config: Dict) -> str:
         client = OpenAI()
         response = client.chat.completions.create(
             model=config.model_name,
             messages=[
                 {
                     "role": "system",
-                    "content": config.system_message
+                    "content": config.kanji_message if len(kanji) == 1 else config.word_message
                 },
                 {"role": "user", "content": f"{kanji}"},
             ],
-            max_tokens=200,
-            temperature=0.7
+            max_tokens=500,
+            temperature=0.1
         )
-        return response.choices[0].message.content.strip()
+        # parse content of triple quotes
+        return response.choices[0].message.content.strip().split('"""')[1]
 
 
 class SpeechSynthesizer:
 
     @staticmethod
-    def convert_text_to_speech(text: str, config: Config, kanji: str = 'output') -> None:
+    def convert_text_to_speech(text: str, config: Dict, kanji: str = 'output') -> None:
         client = texttospeech.TextToSpeechClient()
         input_text = texttospeech.SynthesisInput(text=text)
         voice = texttospeech.VoiceSelectionParams(
@@ -99,7 +78,7 @@ class AudioPlayer:
             pygame.time.Clock().tick(10)
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) != 2:
         print('Usage: python main.py <kanji>')
         sys.exit(1)
@@ -109,7 +88,7 @@ if __name__ == '__main__':
         os.makedirs(OUTPUT_DIR)
 
     # Parsing config data from YAML file
-    config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
+    config = OmegaConf.load(PROJECT_DIR + '/config.yaml')
 
     if os.path.exists(os.path.join(OUTPUT_DIR, f'{kanji_input}_{config.model_name}.mp3')):
         AudioPlayer.play(OUTPUT_DIR + f'/{kanji_input}_{config.model_name}.mp3')
@@ -122,3 +101,7 @@ if __name__ == '__main__':
         f.write(explanation)
 
     SpeechSynthesizer.convert_text_to_speech(explanation, config, kanji_input)
+
+
+if __name__ == '__main__':
+    main()

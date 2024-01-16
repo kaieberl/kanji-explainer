@@ -4,3 +4,5 @@ openai>=1.0.0
 pydub
 pygame
 pyyaml
+hydra-core
+omegaconf

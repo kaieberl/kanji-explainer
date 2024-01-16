@@ -1,21 +1,22 @@
-from main import KanjiExplainer, SpeechSynthesizer, Config, PROJECT_DIR
+# work in progress
+
+from main import KanjiExplainer, SpeechSynthesizer, PROJECT_DIR
 import unittest
 from unittest.mock import patch, MagicMock
+from omegaconf import OmegaConf
 
 
 class TestGetKanjiExplanation(unittest.TestCase):
     def test_get_kanji_explanation(self):
-        config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
-        kanji_explainer = KanjiExplainer()
-        result = kanji_explainer.get_explanation('相', config)
+        config = OmegaConf.load(PROJECT_DIR + '/config.yaml')
+        result = KanjiExplainer.get_explanation('相', config)
         print(result)
 
 
 class TestTextToSpeech(unittest.TestCase):
     def test_text_to_speech(self):
-        config = Config.from_yaml(PROJECT_DIR + '/config.yaml')
-        speech_synthesizer = SpeechSynthesizer()
-        speech_synthesizer.convert_text_to_speech("""漢字: 相
+        config = OmegaConf.load(PROJECT_DIR + '/config.yaml')
+        SpeechSynthesizer.convert_text_to_speech("""漢字: 相
 
 読み方: あい
 
